@@ -87,7 +87,7 @@ const FamilyDashboard = () => {
                         </div>
                         <div>
                             <h2 style={{ margin: 0, color: 'white', fontSize: '1.8rem', fontWeight: 900 }}>CRITICAL SOS SIGNAL</h2>
-                            <p style={{ margin: 0, opacity: 0.9, fontWeight: 700 }}>Signal received from {sosData?.patient}'s Syncare Bot</p>
+                            <p style={{ margin: 0, opacity: 0.9, fontWeight: 700 }}>Signal received from {sosData?.patient}'s SynCare Bot</p>
                         </div>
                     </div>
                     <button
