@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight, ArrowLeft } from 'lucide-react';
+
 
 const Login = () => {
     const navigate = useNavigate();
@@ -9,118 +10,136 @@ const Login = () => {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Simulate login logic
-        // 1. Get existing users database
         const users = JSON.parse(localStorage.getItem('users') || '{}');
         const user = users[email];
 
-        // 2. Verify credentials
         if (!user || user.password !== password) {
-            alert('Invalid email or password. Please try again or sign up.');
+            alert('Invalid email/password. Please check or sign up!');
             return;
         }
 
-        // 3. Set persistent session
         localStorage.setItem('currentUser', JSON.stringify(user));
-
-        // 4. Redirect based on stored role
-        const storedRole = user.role;
-
-        if (storedRole === 'Doctor') {
-            navigate('/doctor/setup');
-        } else if (storedRole === 'Patient') {
-            navigate('/patient/dashboard');
-        } else if (storedRole === 'Family') {
-            navigate('/family/dashboard');
-        } else {
-            navigate('/role-selection');
-        }
+        const roleRoutes = {
+            Doctor: '/doctor/dashboard',
+            Patient: '/patient/dashboard',
+            Family: '/family/dashboard'
+        };
+        navigate(roleRoutes[user.role] || '/role-selection');
     };
 
     return (
         <div style={{
+            position: 'relative',
             width: '100vw',
             height: '100vh',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: '#E7DDDD',
-            fontFamily: 'var(--font-family)'
+            overflow: 'hidden'
         }}>
-            <div style={{
-                background: '#fff',
-                padding: '40px',
-                borderRadius: '20px',
-                boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
+
+
+            <button
+                onClick={() => navigate('/')}
+                style={{
+                    position: 'absolute',
+                    top: '40px',
+                    left: '40px',
+                    color: 'var(--primary)',
+                    background: 'transparent',
+                    fontWeight: 700,
+                    zIndex: 20,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    border: 'none',
+                    cursor: 'pointer'
+                }}
+            >
+                <ArrowLeft size={20} /> Back to Home
+            </button>
+
+            <div className="animate-fade-in" style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                padding: '50px 40px',
+                borderRadius: '32px',
+                boxShadow: 'var(--shadow-lg)',
                 width: '100%',
-                maxWidth: '400px',
+                maxWidth: '440px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '20px'
+                gap: '25px',
+                zIndex: 10,
+                border: '1px solid white'
             }}>
-                <h2 style={{ textAlign: 'center', color: '#333' }}>Welcome Back</h2>
+                <div style={{ textAlign: 'center' }}>
+                    <h2 style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '10px' }}>Syncare</h2>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem' }}>Welcome back to your care space.</p>
+                </div>
 
                 <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-
                     <div style={{ position: 'relative' }}>
-                        <Mail size={20} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
+                        <Mail size={20} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
                             type="email"
                             placeholder="Email Address"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            autoComplete="username"
                             style={{
                                 width: '100%',
-                                padding: '12px 15px 12px 45px',
-                                borderRadius: '10px',
-                                border: '1px solid #ddd',
+                                padding: '14px 15px 14px 45px',
+                                borderRadius: '16px',
+                                border: '1px solid #E0E0E0',
                                 fontSize: '1rem',
-                                outline: 'none'
+                                outline: 'none',
+                                background: '#F9F9F9',
+                                transition: 'var(--transition)'
                             }}
+                            onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+                            onBlur={(e) => e.target.style.borderColor = '#E0E0E0'}
                             required
                         />
                     </div>
 
                     <div style={{ position: 'relative' }}>
-                        <Lock size={20} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: '#999' }} />
+                        <Lock size={20} style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
                         <input
                             type="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            autoComplete="current-password"
                             style={{
                                 width: '100%',
-                                padding: '12px 15px 12px 45px',
-                                borderRadius: '10px',
-                                border: '1px solid #ddd',
+                                padding: '14px 15px 14px 45px',
+                                borderRadius: '16px',
+                                border: '1px solid #E0E0E0',
                                 fontSize: '1rem',
-                                outline: 'none'
+                                outline: 'none',
+                                background: '#F9F9F9',
+                                transition: 'var(--transition)'
                             }}
+                            onFocus={(e) => e.target.style.borderColor = 'var(--primary)'}
+                            onBlur={(e) => e.target.style.borderColor = '#E0E0E0'}
                             required
                         />
-                    </div>
-
-                    <div style={{ textAlign: 'right', fontSize: '0.9rem', color: '#84DCC6', cursor: 'pointer' }}>
-                        Forgot Password?
                     </div>
 
                     <button
                         type="submit"
                         style={{
-                            padding: '12px',
-                            borderRadius: '10px',
+                            padding: '16px',
+                            borderRadius: '16px',
                             border: 'none',
-                            background: '#84DCC6',
-                            color: '#fff',
+                            background: 'var(--primary)',
+                            color: 'var(--white)',
                             fontSize: '1.1rem',
-                            fontWeight: 'bold',
+                            fontWeight: 700,
                             marginTop: '10px',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            gap: '10px'
+                            gap: '12px',
+                            boxShadow: '0 8px 20px rgba(58, 90, 120, 0.2)'
                         }}
                     >
                         Sign In
@@ -128,30 +147,38 @@ const Login = () => {
                     </button>
                 </form>
 
-                <div style={{ textAlign: 'center', color: '#999', fontSize: '0.9rem' }}>
-                    Or continue with
+                <div style={{ textAlign: 'center', margin: '10px 0' }}>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>
+                        Don't have an account? <span onClick={() => navigate('/role-selection')} style={{ color: 'var(--primary)', cursor: 'pointer', fontWeight: 700 }}>Join Syncare</span>
+                    </p>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '15px', color: '#DDD' }}>
+                    <div style={{ flex: 1, height: '1px', background: '#EEE' }} />
+                    <span style={{ fontSize: '0.8rem', color: '#AAA' }}>OR</span>
+                    <div style={{ flex: 1, height: '1px', background: '#EEE' }} />
                 </div>
 
                 <button style={{
-                    padding: '12px',
-                    borderRadius: '10px',
-                    border: '1px solid #ddd',
-                    background: '#fff',
-                    color: '#333',
+                    padding: '14px',
+                    borderRadius: '16px',
+                    border: '1px solid #EEE',
+                    background: '#FFF',
+                    color: 'var(--text-main)',
                     fontSize: '1rem',
+                    fontWeight: 600,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    gap: '10px'
-                }}>
+                    gap: '12px',
+                    transition: 'var(--transition)'
+                }}
+                    onMouseOver={(e) => e.currentTarget.style.background = '#F9F9F9'}
+                    onMouseOut={(e) => e.currentTarget.style.background = '#FFF'}
+                >
                     <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style={{ width: '20px' }} />
-                    Google
+                    Continue with Google
                 </button>
-
-                <div style={{ textAlign: 'center', marginTop: '20px', fontSize: '0.9rem' }}>
-                    Don't have an account? <span onClick={() => navigate('/role-selection')} style={{ color: '#84DCC6', cursor: 'pointer', fontWeight: 'bold' }}>Sign Up</span>
-                </div>
-
             </div>
         </div>
     );
