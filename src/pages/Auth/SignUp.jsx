@@ -72,7 +72,7 @@ const SignUp = () => {
                 border: '1px solid white'
             }}>
                 <div style={{ textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '10px' }}>Join Syncare</h2>
+                    <h2 style={{ fontSize: '3.5rem', fontWeight: 900, color: 'var(--primary)', marginBottom: '10px' }}>Join SynCare</h2>
                     <p style={{ color: 'var(--text-muted)' }}>
                         Joining as a <span style={{ fontWeight: 800, color: 'var(--primary-light)' }}>{role}</span>
                     </p>
